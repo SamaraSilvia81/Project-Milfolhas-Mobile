@@ -23,7 +23,7 @@ function HeroScreen({ navigation }) {
           style={styles.button}
           onPress={() => navigation.navigate('Home')}
         >
-          Iniciar Atendimento
+          Iniciar
         </Button>
       </View>
     </View>
@@ -43,7 +43,7 @@ const styles = {
     marginTop: 20
   },
   button: {
-    width: '80%',
+    width: '100%',
     paddingHorizontal: 30,
     backgroundColor: "#BEAD64" // #EF7377
   }

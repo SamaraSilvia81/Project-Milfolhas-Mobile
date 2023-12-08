@@ -1,64 +1,45 @@
+// Meal.js
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 
-export const Meal = ({ meal, onPress }) => {
-
-  const isDisabled = ['Almoço', 'Jantar', 'Bebidas'].includes(meal.mealname);
-
+function Meal({ meal, onPress }) {
   const handlePress = () => {
-    if (!isDisabled) {
-      onPress(meal);
-    }
+    onPress(meal);
   };
 
   return (
-    <TouchableOpacity onPress={handlePress} disabled={isDisabled}>
-      <View style={styles.item}>
-        <View style={[styles.card, isDisabled && styles.disabledCard]}>
-          <Image source={{ uri: meal.image }} style={styles.img} />
-          {isDisabled && <View style={styles.overlay} />}
-          <View style={styles.textContainer}>
-            <Text variant="titleLarge" style={styles.titleItem}>
-              {meal.mealname}
-            </Text>
-          </View>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.card}>
+        <View style={styles.textContainer}>
+          <Text variant="titleLarge" style={styles.titleItem}>
+            {meal.name}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  item: {
-    flex: 1,
+  card: {
+    margin: 10,
     borderRadius: 10,
-    flexDirection: 'row',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    width: 150,
+    height: 150, // Tornando o card um quadrado
     justifyContent: 'center',
     alignItems: 'center',
   },
-  card: {
-    width: '100%',
-  },
-  disabledCard: {
-    opacity: 0.6,
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#000',
-  },
   titleItem: {
-    marginBottom: 10,
     textAlign: 'center',
     color: '#fff',
   },
-  img: {
-    width: '100%',
-    height: 210
-  },
   textContainer: {
-    ...StyleSheet.absoluteFillObject,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
 });
+
+export default Meal;

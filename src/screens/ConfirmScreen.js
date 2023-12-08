@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { Confirm } from "../components/Confirm";
-import { getFood } from "../api/food";
+import { fetchItemsByListId } from "../api/food";
 
 function ConfirmScreen() {
 
@@ -23,8 +23,8 @@ function ConfirmScreen() {
   };
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["WorldsGeeksApi"],
-    queryFn: getFood,
+    queryKey: ["AppTotem"],
+    queryFn: fetchItemsByListId,
   });
 
   if (isLoading) {

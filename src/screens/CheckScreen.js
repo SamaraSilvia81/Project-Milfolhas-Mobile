@@ -9,22 +9,22 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { Check } from "../components/Check";
-import { getFood } from "../api/food";
+import { fetchItemsByListId } from "../api/food";
 
 function CheckScreen() {
 
   const navigation = useNavigation();
   const route = useRoute();
 
-  const { price, quantity } = route.params;
+  const { value, quantity } = route.params;
 
   const handleGoBack = () => {
     navigation.goBack();
   };
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["WorldsGeeksApi"],
-    queryFn: getFood,
+    queryKey: ["AppTotem"],
+    queryFn: fetchItemsByListId,
   });
 
   if (isLoading) {
@@ -44,7 +44,7 @@ function CheckScreen() {
     );
   }
 
-  if (!price || !quantity) {
+  if (!value || !quantity) {
     return (
       <View style={styles.errorContainer}>
         <Text>No food found</Text>
@@ -75,7 +75,7 @@ function CheckScreen() {
           style={{ width: 120, height: 120 }}
         />
       </View>
-      <Check price={price} quantity={quantity} />
+      <Check price={value} quantity={quantity} />
     </View>
   );
 }

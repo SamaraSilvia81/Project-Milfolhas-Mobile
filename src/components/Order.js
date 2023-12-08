@@ -11,12 +11,13 @@ export const Order = ({ food }) => {
   const navigation = useNavigation();
 
   const handleCardPress = () => {
+
     setIsButtonPressed((prevState) => !prevState);
 
     const selectedFood = {
-      objectId: food.objectId,
-      foodname: food.foodname,
-      price: food.price,
+      objectId: food.id,
+      foodname: food.name,
+      value: food.value,
       image: food.image,
       quantity: counter,
     };
@@ -43,16 +44,17 @@ export const Order = ({ food }) => {
           </View>
           <View style={styles.detailsContainer}>
             <View style={styles.nameContainer}>
-              <Text style={styles.name}>{food.foodname}</Text>
+              <Text style={styles.name}>{food.name}</Text>
             </View>
             <View style={styles.descriptionContainer}>
-              <Text style={styles.descriptionTitle}>Ingredientes</Text>
-              <Text style={styles.description}>{food.about}</Text>
+              {/* <Text style={styles.descriptionTitle}>Ingredientes</Text>
+                <Text style={styles.description}>{food.about}</Text>
+              <Text style={styles.tagText}>asdjkasdijewjj</Text> */}
             </View>
           </View>
           <View style={styles.tagContainer}>
             <View style={styles.tagItem}>
-              <Text style={styles.tagText}>Preço: R${food.price}</Text>
+              <Text style={styles.tagText}>Preço: R${food.value}</Text>
             </View>
           </View>
         </View>

@@ -7,21 +7,43 @@ import { useNavigation } from '@react-navigation/native';
 import { useQuery } from "@tanstack/react-query";
 
 import { Breakfast } from "../components/Breakfast.js";
-import { getBreakfast } from "../api/breakfast";
+import { fetchItemsByListId } from "../api/food";
+
+import { useSelector } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function BreakfastScreen () {
-
-  const { isLoading, error, data, isFetching } = useQuery({
-    queryKey: ["MilFolhas"],
-    queryFn: getBreakfast,
-  });
+function BreakfastScreen ({route}) {
 
   const navigation = useNavigation();
+  const userId = useSelector((state) => state.auth.userId);
 
-  const handleCardPress = (food) => {
-    navigation.navigate('Food', { foodId: food.objectId });
+  // Extracting additional parameters from route.params
+  const { mealName, listId } = route.params;
+
+  console.log("BREAKFASTSCREEN")
+  console.log('1. MealName:', mealName);
+  console.log('2. UserId from route:', userId);
+  console.log('3. ListId:', listId);
+
+  const { isLoading, error, data, isFetching } = useQuery({
+    queryKey: ["AppTotem", userId],
+    queryFn: () => fetchItemsByListId(userId,listId),
+    onError: (err) => console.error("Erro na query:", err),
+  });
+
+  // console.log("Comidas",data)
+
+  const handleCardPress = (breakfast) => {
+    
+    console.log("Comida do café da manhã pressionado: ", breakfast);
+    console.log("Nome da comida do café: ", breakfast.name);
+    console.log("ID da comida do café: ", breakfast.id);
+  
+    navigation.navigate('Food', {
+      breakfastName: breakfast.name,
+      breakfastId: breakfast.id,
+    });
   };
 
   const handleGoBack = () => {
@@ -65,19 +87,18 @@ function BreakfastScreen () {
           style={styles.arrowIconContainer}
           onPress={handleGoBack}
         />
-        <Text style={styles.pageTitle}>Café da Manhã</Text>
+        <Text style={styles.pageTitle}>{mealName}</Text>
       </View>
 
-      <View style={{ flex: 1 }}>
         <FlatList
           style={{ flex: 1 }}
           data={data}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <Breakfast breakfast={item} onPress={handleCardPress} />
-          )}
+          renderItem={({ item }) => {
+            console.log("Food Item:", item); // Add this line to log each food item
+            return <Breakfast breakfast={item} onPress={handleCardPress} />;
+          }}
         />
-      </View>
     </View>
   );
 };

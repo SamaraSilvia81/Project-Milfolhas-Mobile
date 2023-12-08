@@ -1,32 +1,30 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://parseapi.back4app.com/classes",
-  headers: {
-    "X-Parse-Application-Id": "BD7SENBisRQTIqReTd0lhoB3GcfBAliycyNkkI7p",
-    "X-Parse-REST-API-Key": "zOuIRMQpF31cVbv8DkuGl7FT3IBalhhvpp5ahuvs",
-  },
+  baseURL: 'https://milfolhasserver.onrender.com',
 });
 
-export const getMeal = () =>
-  instance
-    .get("/Meals", {
-      params: {
-        keys: [
-          "objectID",
-          "mealname", 
-          "image", 
-        ]
-      },
-    })
-    .then((res) => {
-      console.log("MeusDados:", res.data);
-      return res.data.results;
-});
+// Meal - Refeições
+export const fetchListas = async (userId) => {
+  try {
+    const response = await instance.get(`/user/${userId}/lists`);
+    console.log("listasBreak", response)
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
-export const createMeal = ({mealname,image}) => {
-  return instance.post("/Meals", {
-    mealname,
-    image,
-  });
+// Pega o ID das refições a partir do nome das refeições
+export const fetchListIdByName = async (userId, name) => {
+  try {
+    const response = await instance.get(`/user/${userId}/lists`);
+    const lists = response.data;
+    const list = lists.find((list) => list.name === name);
+    return list ? list.id : null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };

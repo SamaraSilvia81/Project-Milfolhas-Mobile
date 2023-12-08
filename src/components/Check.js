@@ -8,6 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 export const Check = ({ price, quantity }) => {
 
   const navigation = useNavigation();
+  const priceConverted = parseFloat(price);
+
+  console.log("BORA CHECKKKKKKK");
 
   return (
     <View style={styles.container}>
@@ -18,7 +21,7 @@ export const Check = ({ price, quantity }) => {
             <Text style={styles.span} variant="headlineLarge">Samara Silvia</Text>
           </View>
           <View style={styles.tagContainer}>
-            <Text style={styles.tagText} variant="headlineSmall"> Preço: R$ {price * quantity}</Text>
+            <Text style={styles.tagText} variant="headlineSmall"> Preço: R$ {priceConverted * quantity}</Text>
           </View>
         </View>
         <View style={styles.actions}>

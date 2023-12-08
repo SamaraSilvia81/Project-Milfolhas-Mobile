@@ -6,14 +6,19 @@ import { Text } from "react-native-paper";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { useQuery } from "@tanstack/react-query";
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { Order } from "../components/Order";
-import { getFood } from "../api/food";
+import { fetchItemsByListId } from "../api/food";
 
 function OrderScreen ({ route }) {
 
+  const userId = useSelector((state) => state.auth.userId);
+  
   const { foodId } = route.params;
+
+  console.log("ORDEER FODD:", foodId)
 
   const navigation = useNavigation();
 
@@ -21,9 +26,11 @@ function OrderScreen ({ route }) {
     navigation.goBack();
   };
 
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["WorldsGeeksApi"],
-    queryFn: getFood,
+  const { isLoading, error, data, isFetching } = useQuery({
+    queryKey: ["AppTotem", userId],
+    queryFn: () => fetchItemsByListId(userId, foodId),
+    onError: (err) => console.error("Erro na query:", err),
+    staleTime: 10000,
   });
 
   if (isLoading) {
@@ -43,15 +50,15 @@ function OrderScreen ({ route }) {
     );
   }
 
-  const selectedfood = data.find((food) => food.objectId === foodId);
+  // const selectedfood = data.find((food) => food.objectId === foodId);
 
-  if (!selectedfood) {
-    return (
-      <View style={styles.errorContainer}>
-        <Text>No food found</Text>
-      </View>
-    );
-  }
+  // if (!selectedfood) {
+  //   return (
+  //     <View style={styles.errorContainer}>
+  //       <Text>No food found</Text>
+  //     </View>
+  //   );
+  // }
 
   return (
 
@@ -81,7 +88,11 @@ function OrderScreen ({ route }) {
         />
       </View>
 
-      <Order food={selectedfood} />
+      <View style={{ flex: 1 }}>
+        {data.find(item => item.id === foodId) && (
+          <Order food={data.find(item => item.id === foodId)}/>
+        )}
+      </View>
 
     </View>
   );

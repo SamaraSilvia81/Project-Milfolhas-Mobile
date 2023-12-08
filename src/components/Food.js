@@ -12,7 +12,8 @@ export const Food = ({ food, onPress }) => {
         <View style={styles.card}>
           <Image source={{ uri: food.image }} style={styles.img} />
           <View style={styles.textContainer}>
-            <Text variant="titleLarge" style={styles.titleItem}>{food.foodname}</Text>
+            <Text variant="titleLarge" style={styles.titleItem}>{food.name}</Text>
+            <Text variant="titleLarge" style={styles.titleItem}>{food.value}</Text>
           </View>
         </View>
       </View>
@@ -38,11 +39,10 @@ const styles = StyleSheet.create({
     color: '#fff', // Definir cor do texto como branco
   },
   img: {
-    width: "100%",
+    width: 250,
     height: 210,
   },
   textContainer: {
-    ...StyleSheet.absoluteFillObject, // Preencher completamente o contêiner pai
     justifyContent: 'center',
     alignItems: 'center',
   },

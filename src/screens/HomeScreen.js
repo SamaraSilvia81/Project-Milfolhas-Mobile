@@ -1,27 +1,34 @@
 import React from "react";
-
-import { ActivityIndicator, View, Image, StatusBar, StyleSheet, FlatList } from "react-native";
+import { ActivityIndicator, View, StatusBar, StyleSheet, FlatList } from "react-native";
 import { Text } from 'react-native-paper';
-
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from "@tanstack/react-query";
-
-import { Meal } from "../components/Meal";
-import { getMeal } from "../api/meal";
-
+import Meal from "../components/Meal";
+import { fetchListas } from "../api/meal";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function HomeScreen (){
+import { useSelector } from 'react-redux';
 
-  const { isLoading, error, data, isFetching } = useQuery({
-    queryKey: ["MilFolhas"],
-    queryFn: getMeal,
-  });
+function HomeScreen() {
 
   const navigation = useNavigation();
+  const userId = useSelector((state) => state.auth.userId);
 
-  const handleCardPress = (breakfast) => {
-    navigation.navigate('Breakfast', { breakfastId: breakfast.objectId });
+  const { isLoading, error, data, isFetching } = useQuery({
+    queryKey: ["AppTotem", userId],
+    queryFn: () => fetchListas(userId),
+    onError: (err) => console.error("Erro na query:", err),
+  });
+
+  console.log("Dados recebidos:", data);
+
+  const handleCardPress = (meal) => {
+    console.log("Item do café pressionado:", meal);
+    console.log("ID da lista:", meal.id)
+    navigation.navigate('Breakfast', {
+      mealName: meal.name,
+      listId: meal.id, // Assuming meal.id is the listId
+    });
   };
 
   const handleGoBack = () => {
@@ -47,7 +54,7 @@ function HomeScreen (){
 
   return (
     <View style={styles.container}>
-
+      
       {isFetching && <Text>IS FETCHING</Text>}
 
       <StatusBar
@@ -70,18 +77,21 @@ function HomeScreen (){
       </View>
 
       <View style={{ flex: 1 }}>
+      {data ? (
         <FlatList
-          style={{ flex: 1 }}
+          style={[styles.flatListContainer, { flex: 1 }]}
           data={data}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <Meal meal={item} onPress={handleCardPress} />
-          )}
+          renderItem={({ item }) => <Meal meal={item} onPress={handleCardPress} />}
         />
-      </View>
+      ) : (
+        <Text>No data available</Text>
+      )}
+    </View>
+    
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -90,6 +100,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: '#fcfcfc',
+  },
+  flatListContainer: {
+    flexDirection: 'row', // Adicionando flexDirection para renderizar horizontalmente
   },
   navbarContainer: {
     flexDirection: "row",

@@ -11,12 +11,21 @@ export const Confirm = ({ food }) => {
   
   const navigation = useNavigation();
 
+  console.log("JFÇASBKSJKÇLSKJHHHJ")
+
+  // const handleCardPress = () => {
+  //   setIsButtonPressed((prevState) => !prevState);
+  //   console.log("BORA PAGARRRRR")
+  //   navigation.navigate('Check', {
+  //     value: food.value,
+  //     quantity: food.quantity,
+  //   });
+  // };
+
   const handleCardPress = () => {
     setIsButtonPressed((prevState) => !prevState);
-    navigation.navigate('Check', {
-      price: food.price,
-      quantity: food.quantity,
-    });
+    console.log("BORA PAGARRRRR")
+    navigation.navigate('Fake')
   };
 
   return (
@@ -34,7 +43,7 @@ export const Confirm = ({ food }) => {
             <Text style={styles.name}>Prato: {food.foodname}</Text>
           </View>
           <View style={styles.tagContainer}>
-            <Text style={styles.tagText}> Preço: R$ {food.price * food.quantity}</Text>
+            <Text style={styles.tagText}> Preço: R$ {food.value}</Text>
           </View>
         </View>
         <View style={styles.actions}>
@@ -69,17 +78,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card:{
-    marginTop: 30,
+    marginTop: 15, //30
   },
   content: {
     alignItems: 'center',
   },
   avatarContainer:{
-    marginBottom: 50,
+    marginBottom: 5, //50
   },
   detailsOrder: {
     marginTop: 20,
-    marginBottom: 40,
+    // marginBottom: 40,
     textAlign: 'justify'
   },
   name: {
@@ -106,7 +115,7 @@ const styles = StyleSheet.create({
   lineBottom: {
     position: 'absolute',
     bottom: 0,
-    width: '120%',
+    width: 320,
     height: 160,
     backgroundColor: '#23232e',
     zIndex: -1,
